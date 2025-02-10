@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { fetchEvents } from '../api.js';
+import { Card, ListGroup, Container, Spinner, Alert, Row, Col } from 'react-bootstrap';
 
 const Dashboard = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const loadEvents = async () => {
@@ -22,31 +23,56 @@ const Dashboard = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading events...</div>;
+    return (
+      <Container className="mt-5 text-center">
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+        <p className="mt-3">Loading events...</p>
+      </Container>
+    );
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return (
+      <Container className="mt-5">
+        <Alert variant="danger" className="text-center">
+          {error}
+        </Alert>
+      </Container>
+    );
   }
 
   return (
-    <div>
-      <h1>Event Dashboard</h1>
+    <Container className="mt-5">
+      <h1 className="text-center mb-4">Event Dashboard</h1>
       {events.length === 0 ? (
-        <p>No events found.</p>
+        <Alert variant="info" className="text-center">
+          No events found.
+        </Alert>
       ) : (
-        <ul>
+        <Row>
           {events.map((event) => (
-            <li key={event._id}>
-              <h2>{event.name}</h2>
-              <p>{event.description}</p>
-              <p>Date: {new Date(event.date).toLocaleString()}</p>
-              <p>Location: {event.location}</p>
-            </li>
+            <Col key={event._id} xs={12} sm={6} md={4} className="mb-4">
+              <Card className="shadow-sm rounded h-100">
+                <Card.Body>
+                  <Card.Title className="text-primary">{event.name}</Card.Title>
+                  <Card.Text>{event.description}</Card.Text>
+                  <ListGroup variant="flush">
+                    <ListGroup.Item>
+                      <strong>Date:</strong> {new Date(event.date).toLocaleString()}
+                    </ListGroup.Item>
+                    <ListGroup.Item>
+                      <strong>Location:</strong> {event.location}
+                    </ListGroup.Item>
+                  </ListGroup>
+                </Card.Body>
+              </Card>
+            </Col>
           ))}
-        </ul>
+        </Row>
       )}
-    </div>
+    </Container>
   );
 };
 
