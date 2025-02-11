@@ -17,18 +17,20 @@ const CreateEvent = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Check if all fields are filled
     if (!eventData.name || !eventData.description || !eventData.date || !eventData.location) {
       setError('All fields are required.');
       return;
     }
 
     try {
+      // Call the API to create the event
       await createEvent(eventData);
-      setSuccess(true);
-      setError('');
-      navigate('/dashboard');
+      setSuccess(true);  
+      setError('');  
+      navigate('/dashboard');  
     } catch (error) {
-      setError('Failed to create event. Please try again.');
+      setError('Failed to create event. Please try again.');  
       console.error('Error creating event:', error);
     }
   };
@@ -36,28 +38,25 @@ const CreateEvent = () => {
   return (
     <Container className="mt-5">
       <Row className="justify-content-center">
-        <Col xs={12} md={8} lg={6}> 
-          <Card className="shadow p-3 p-md-4"> 
-            <Card.Title className="text-center mb-4 fs-3 fs-md-2"> 
-              Create Event
-            </Card.Title>
-            {error && <Alert variant="danger">{error}</Alert>}
-            {success && <Alert variant="success">Event created successfully!</Alert>}
+        <Col xs={12} md={8} lg={6}>
+          <Card className="shadow-lg p-4 border-0 rounded-3">
+            <Card.Title className="text-center mb-4 fs-3">Create Event</Card.Title>
+            {error && <Alert variant="danger" className="text-center">{error}</Alert>}
+            {success && <Alert variant="success" className="text-center">Event created successfully!</Alert>}
             <Form onSubmit={handleSubmit}>
               <Form.Group className="mb-3" controlId="formEventName">
-                <Form.Label>Event Name</Form.Label>
+                <Form.Label className="fw-bold">Event Name</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Enter event name"
                   value={eventData.name}
                   onChange={(e) => setEventData({ ...eventData, name: e.target.value })}
                   required
-                  className="w-100" 
                 />
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="formDescription">
-                <Form.Label>Description</Form.Label>
+                <Form.Label className="fw-bold">Description</Form.Label>
                 <Form.Control
                   as="textarea"
                   rows={3}
@@ -65,34 +64,31 @@ const CreateEvent = () => {
                   value={eventData.description}
                   onChange={(e) => setEventData({ ...eventData, description: e.target.value })}
                   required
-                  className="w-100" 
                 />
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="formDate">
-                <Form.Label>Date and Time</Form.Label>
+                <Form.Label className="fw-bold">Date and Time</Form.Label>
                 <Form.Control
                   type="datetime-local"
                   value={eventData.date}
                   onChange={(e) => setEventData({ ...eventData, date: e.target.value })}
                   required
-                  className="w-100" 
                 />
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="formLocation">
-                <Form.Label>Location</Form.Label>
+                <Form.Label className="fw-bold">Location</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Enter location"
                   value={eventData.location}
                   onChange={(e) => setEventData({ ...eventData, location: e.target.value })}
                   required
-                  className="w-100" 
                 />
               </Form.Group>
 
-              <Button variant="primary" type="submit" className="w-100">
+              <Button variant="primary" type="submit" className="w-100 fw-bold">
                 Create Event
               </Button>
             </Form>
@@ -104,3 +100,4 @@ const CreateEvent = () => {
 };
 
 export default CreateEvent;
+

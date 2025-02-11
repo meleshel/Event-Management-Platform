@@ -9,11 +9,12 @@ import Dashboard from './pages/Dashboard.js';
 import CreateEvent from './pages/CreateEvent.js';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 import { Container } from 'react-bootstrap';
+
 const App = () => {
   return (
     <Router>
       <Navbar />
-      <Container fluid className="bg-light min-vh-100 p-5"> 
+      <Container fluid className="bg-light min-vh-100 p-5">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />

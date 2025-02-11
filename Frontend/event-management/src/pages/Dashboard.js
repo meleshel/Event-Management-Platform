@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { fetchEvents } from '../api.js';
-import { Card, ListGroup, Container, Spinner, Alert, Row, Col } from 'react-bootstrap';
+import { fetchEvents, deleteEvent } from '../api.js';
+import { Card, ListGroup, Container, Spinner, Alert, Row, Col, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadEvents = async () => {
@@ -21,6 +23,20 @@ const Dashboard = () => {
     };
     loadEvents();
   }, []);
+
+  const handleDelete = async (eventId) => {
+    try {
+      await deleteEvent(eventId);
+      setEvents(events.filter((event) => event._id !== eventId));
+    } catch (error) {
+      setError('Failed to delete event. Please try again.');
+      console.error('Error deleting event:', error);
+    }
+  };
+
+  const handleEdit = (eventId) => {
+    navigate(`/edit-event/${eventId}`);
+  };
 
   if (loading) {
     return (
@@ -66,6 +82,14 @@ const Dashboard = () => {
                       <strong>Location:</strong> {event.location}
                     </ListGroup.Item>
                   </ListGroup>
+                  <div className="mt-3 d-flex justify-content-between">
+                    <Button variant="warning" size="sm" onClick={() => handleEdit(event._id)}>
+                      Update
+                    </Button>
+                    <Button variant="danger" size="sm" onClick={() => handleDelete(event._id)}>
+                      Delete
+                    </Button>
+                  </div>
                 </Card.Body>
               </Card>
             </Col>

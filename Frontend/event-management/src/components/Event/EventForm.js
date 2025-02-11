@@ -13,7 +13,7 @@ const EventForm = ({ onCreate }) => {
     e.preventDefault();
     try {
       const response = await createEvent(eventData);
-      onCreate(response.data.event); // Notify parent component of successful creation
+      onCreate(response.data.event); 
     } catch (error) {
       console.error('Error creating event:', error);
     }
